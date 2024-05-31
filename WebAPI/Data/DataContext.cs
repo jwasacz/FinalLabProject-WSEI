@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WebAPI.Entities;
 
 namespace WebAPI.Data
 {
@@ -9,5 +10,6 @@ namespace WebAPI.Data
         {
             
         }
+        public DbSet<Refuel> Refuels { get; set; }
     }
 }
