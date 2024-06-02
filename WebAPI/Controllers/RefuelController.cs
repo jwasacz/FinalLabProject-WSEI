@@ -89,13 +89,13 @@ namespace WebAPI.Controllers
         }
 
 
-        public IConfiguration Configuration { get; }
+     //   public IConfiguration Configuration { get; }
 
-        public RefuelController(IConfiguration configuration)
-        {
-            Configuration = configuration;
-            bool showDate = configuration.GetValue<bool>("ShowDate");
-        }
+      //  public RefuelController(IConfiguration configuration)
+      //  {
+      //      Configuration = configuration;
+      //      bool showDate = configuration.GetValue<bool>("ShowDate");
+     //   }
 
 
     }

@@ -1,57 +1,63 @@
-﻿using Xunit;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebAPI.Controllers;
 using WebAPI.Data;
 using WebAPI.Entities;
-using WebAPI.Controllers;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-
+using Xunit;
 
 namespace RefuelTests
 {
-    public class RefuelTests
+    public class RefuelGetByIdTests : IDisposable
     {
-        private async Task<DataContext> GetDbContext()
+        private readonly DataContext _context;
+        private readonly RefuelController _controller;
+
+        public RefuelGetByIdTests()
         {
             var options = new DbContextOptionsBuilder<DataContext>()
-                .UseSqlServer("DbFinalLabWSEI") 
+                .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DbFinalLabWSEI;Trusted_Connection=True;MultipleActiveResultSets=true") 
                 .Options;
 
-            var context = new DataContext(options);
-            // Seed the database with initial data if necessary
-            context.Refuels.Add(new Refuel { Date = System.DateTime.Now, Price = 10 /* initial properties */ });
-            await context.SaveChangesAsync();
+            _context = new DataContext(options);
+            _context.Database.EnsureCreated();
+            _controller = new RefuelController(_context);
+        }
 
-            return context;
+        public void Dispose()
+        {
+            _context.Database.EnsureDeleted(); // Usuwa bazę danych po zakończeniu testów
         }
 
         [Fact]
-        public async Task AddRefuels_ShouldAddRefuelAndReturnList()
+        public async Task GetAllRefuels_ValidId_ReturnsRefuel()
         {
             // Arrange
-            var context = await GetDbContext();
-            var controller = new RefuelController(context);
-            var newRefuel = new Refuel
-            {
-                Date = System.DateTime.Now,
-                Price = 200 // Ustaw właściwości dla nowego tankowania
-            };
+            var newRefuel = new Refuel { Date = DateTime.Now, Price = 20 };
+            await _context.Refuels.AddAsync(newRefuel);
+            await _context.SaveChangesAsync();
 
             // Act
-            var actionResult = await controller.AddRefuels(newRefuel);
+            var result = await _controller.GetAllRefuels(newRefuel.Id);
 
             // Assert
-            Assert.NotNull(actionResult);
-            var okResult = actionResult.Result as OkObjectResult;
-            Assert.NotNull(okResult);
-            Assert.IsType<OkObjectResult>(okResult);
-            Assert.Equal(200, okResult.StatusCode);
-
-            var value = okResult.Value as List<Refuel>;
-            Assert.NotNull(value);
-            Assert.Contains(value, r => r.Price == newRefuel.Price); // Dostosuj sprawdzanie właściwości w razie potrzeby
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var refuelResult = Assert.IsType<Refuel>(okResult.Value);
+            Assert.Equal(newRefuel.Id, refuelResult.Id);
+            Assert.Equal(newRefuel.Price, refuelResult.Price);
         }
 
+        [Fact]
+        public async Task GetAllRefuels_InvalidId_ReturnsBadRequest()
+        {
+            // Arrange
+            int invalidId = 999; // Zakładając, że ID 999 nie istnieje
+
+            // Act
+            var result = await _controller.GetAllRefuels(invalidId);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.Equal("Refuel not found.", badRequestResult.Value);
+        }
     }
 }

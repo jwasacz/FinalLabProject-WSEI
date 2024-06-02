@@ -3,15 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E12BF967-EBEF-4FC4-9E71-2A263B0EFF94}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{75B20AE8-8D9D-4A92-BC97-02AC5F924F18}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8AB0C8CE-AC64-44C9-8F78-39444EFE6D67}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{8012F00C-2835-4B57-9A98-0B54DF543BA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefuelTests", "RefuelTests\RefuelTests.csproj", "{461FA8D5-CDE7-483F-9A8F-B1629508E717}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefuelTests", "RefuelTests\RefuelTests.csproj", "{461FA8D5-CDE7-483F-9A8F-B1629508E717}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
