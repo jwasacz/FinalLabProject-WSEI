@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefuelTests", "RefuelTests\RefuelTests.csproj", "{461FA8D5-CDE7-483F-9A8F-B1629508E717}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSoapService", "WebSoapService\WebSoapService.csproj", "{95C0EA9E-2A77-455C-9DEC-32D318C70278}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,12 +25,17 @@ Global
 		{461FA8D5-CDE7-483F-9A8F-B1629508E717}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{461FA8D5-CDE7-483F-9A8F-B1629508E717}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{461FA8D5-CDE7-483F-9A8F-B1629508E717}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95C0EA9E-2A77-455C-9DEC-32D318C70278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95C0EA9E-2A77-455C-9DEC-32D318C70278}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95C0EA9E-2A77-455C-9DEC-32D318C70278}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95C0EA9E-2A77-455C-9DEC-32D318C70278}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8012F00C-2835-4B57-9A98-0B54DF543BA5} = {75B20AE8-8D9D-4A92-BC97-02AC5F924F18}
+		{95C0EA9E-2A77-455C-9DEC-32D318C70278} = {75B20AE8-8D9D-4A92-BC97-02AC5F924F18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25744114-3B45-4EA2-9AB3-79F8B0EA2CFD}
