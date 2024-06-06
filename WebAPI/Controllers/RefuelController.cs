@@ -20,7 +20,6 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-        [Authorize]
         [HttpGet("GetAllRefuels")]
         public async Task<ActionResult<List<Refuel>>> GetAllRefuels()
         {

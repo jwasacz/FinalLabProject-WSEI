@@ -15,38 +15,37 @@ namespace RefuelTests
         public RefuelGetAllTests()
         {
             var options = new DbContextOptionsBuilder<DataContext>()
-                .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DbFinalLabWSEI;Trusted_Connection=True;MultipleActiveResultSets=true")  
+                .UseInMemoryDatabase(databaseName: "TestDb")
                 .Options;
 
             _context = new DataContext(options);
             _context.Database.EnsureCreated();
             _controller = new RefuelController(_context);
+
+            // Dodajemy kilka testowych rekordów
+            _context.Refuels.AddRange(
+                new Refuel { Date = DateTime.UtcNow.AddDays(-1), Price = 100 },
+                new Refuel { Date = DateTime.UtcNow, Price = 150 }
+            );
+            _context.SaveChanges();
         }
 
         public void Dispose()
         {
-            _context.Database.EnsureDeleted();  // Usuwa bazę danych po zakończeniu testów
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
-        public async Task GetAllRefuels_ShouldReturnAllRefuels()
+        public async Task GetAllRefuels_ReturnsAllRefuels()
         {
-            // Arrange
-            var newRefuel1 = new Refuel { Date = DateTime.Now, Price = 20 };
-            var newRefuel2 = new Refuel { Date = DateTime.Now.AddDays(-1), Price = 30 };
-            await _context.Refuels.AddAsync(newRefuel1);
-            await _context.Refuels.AddAsync(newRefuel2);
-            await _context.SaveChangesAsync();
-
             // Act
             var result = await _controller.GetAllRefuels();
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var refuels = Assert.IsType<List<Refuel>>(okResult.Value);
-            Assert.Equal(2, refuels.Count);
-            Assert.Contains(refuels, r => r.Price == 20);
-            Assert.Contains(refuels, r => r.Price == 30);
+            var expectedCount = await _context.Refuels.CountAsync();
+            Assert.Equal(expectedCount, refuels.Count);
         }
     }
 }

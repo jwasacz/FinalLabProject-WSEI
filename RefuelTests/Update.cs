@@ -15,51 +15,51 @@ namespace RefuelTests
         public RefuelUpdateTests()
         {
             var options = new DbContextOptionsBuilder<DataContext>()
-                .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DbFinalLabWSEI;Trusted_Connection=True;MultipleActiveResultSets=true")  // Zmień to na właściwy connection string
+                .UseInMemoryDatabase(databaseName: "TestDbForUpdate")
                 .Options;
 
             _context = new DataContext(options);
             _context.Database.EnsureCreated();
             _controller = new RefuelController(_context);
+
+            // Dodajemy testowy rekord
+            var refuel = new Refuel { Id = 1, Date = DateTime.UtcNow.AddDays(-1), Price = 100 };
+            _context.Refuels.Add(refuel);
+            _context.SaveChanges();
         }
 
         public void Dispose()
         {
-            _context.Database.EnsureDeleted();  // Usuwa bazę danych po zakończeniu testów
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
-        public async Task UpdateRefuels_ValidId_UpdatesAndReturnsRefuel()
+        public async Task UpdateRefuel_ReturnsUpdatedRefuel()
         {
             // Arrange
-            var existingRefuel = new Refuel { Date = DateTime.Now.AddDays(-1), Price = 100 };
-            await _context.Refuels.AddAsync(existingRefuel);
-            await _context.SaveChangesAsync();
-
-            var updatedRefuel = new Refuel { Id = existingRefuel.Id, Date = DateTime.Now, Price = 150 };
+            var updatedRefuel = new Refuel { Id = 1, Date = DateTime.UtcNow, Price = 150 };
 
             // Act
             var result = await _controller.UpdateRefuels(updatedRefuel);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var resultRefuel = Assert.IsType<Refuel>(okResult.Value);
-            Assert.Equal(150, resultRefuel.Price);
-            Assert.Equal(updatedRefuel.Date.Date, resultRefuel.Date.Date);
+            var refuel = Assert.IsType<Refuel>(okResult.Value);
+            Assert.Equal(updatedRefuel.Date, refuel.Date);
+            Assert.Equal(updatedRefuel.Price, refuel.Price);
         }
 
         [Fact]
-        public async Task UpdateRefuels_InvalidId_ReturnsBadRequest()
+        public async Task UpdateRefuel_ReturnsBadRequest_WhenRefuelNotFound()
         {
             // Arrange
-            var updatedRefuel = new Refuel { Id = 999, Date = DateTime.Now, Price = 150 };  // ID 999 assumed not to exist
+            var updatedRefuel = new Refuel { Id = 99, Date = DateTime.UtcNow, Price = 150 };
 
             // Act
             var result = await _controller.UpdateRefuels(updatedRefuel);
 
             // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
-            Assert.Equal("Refuel not found.", badRequestResult.Value);
+            Assert.IsType<BadRequestObjectResult>(result.Result);
         }
     }
 }

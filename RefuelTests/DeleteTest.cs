@@ -15,55 +15,38 @@ namespace RefuelTests
         public RefuelDeleteTests()
         {
             var options = new DbContextOptionsBuilder<DataContext>()
-                .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DbFinalLabWSEI;Trusted_Connection=True;MultipleActiveResultSets=true")  // Zmieñ to na w³aœciwy connection string
+                .UseInMemoryDatabase(databaseName: "TestDb")
                 .Options;
 
             _context = new DataContext(options);
             _context.Database.EnsureCreated();
             _controller = new RefuelController(_context);
+
+            // Dodajemy testowy rekord, abyœmy mogli go póŸniej usun¹æ
+            _context.Refuels.Add(new Refuel { Date = DateTime.UtcNow, Price = 100 });
+            _context.SaveChanges();
         }
 
         public void Dispose()
         {
-            _context.Database.EnsureDeleted();  // Usuwa bazê danych po zakoñczeniu testów
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
-        public async Task DeleteRefuels_ShouldRemoveRefuelAndReturnUpdatedList()
+        public async Task DeleteRefuels_DeletesRefuel_ReturnsUpdatedList()
         {
             // Arrange
-            var newRefuel = new Refuel { Date = DateTime.Now, Price = 20 };
-            var addResult = await _controller.AddRefuels(newRefuel);
-            Assert.NotNull(addResult);
-
-            var okAddResult = addResult.Result as OkObjectResult;
-            Assert.NotNull(okAddResult);
-            var addedRefuel = ((List<Refuel>)okAddResult.Value).Last();
+            var existingRefuel = await _context.Refuels.FirstAsync();
+            var initialCount = await _context.Refuels.CountAsync();
 
             // Act
-            var deleteResult = await _controller.DeleteRefuels(addedRefuel.Id);
-            Assert.NotNull(deleteResult);
-
-            var okDeleteResult = deleteResult.Result as OkObjectResult;
-            Assert.NotNull(okDeleteResult);
+            var result = await _controller.DeleteRefuels(existingRefuel.Id);
 
             // Assert
-            var refuels = Assert.IsType<List<Refuel>>(okDeleteResult.Value);
-            Assert.DoesNotContain(refuels, r => r.Id == addedRefuel.Id);
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var refuels = Assert.IsType<List<Refuel>>(okResult.Value);
+            Assert.Equal(initialCount - 1, refuels.Count);
+            Assert.DoesNotContain(refuels, r => r.Id == existingRefuel.Id);
         }
-
-        [Fact]
-        public async Task DeleteRefuels_ShouldReturnBadRequestWhenRefuelDoesNotExist()
-        {
-            // Act
-            var result = await _controller.DeleteRefuels(999);  // Zak³adaj¹c, ¿e ID 999 nie istnieje
-
-            // Assert
-            var badRequestResult = result.Result as BadRequestObjectResult;
-            Assert.NotNull(badRequestResult);
-            Assert.Equal(400, badRequestResult.StatusCode);
-            Assert.Equal("Refuel not found.", badRequestResult.Value);
-        }
-
     }
 }

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefuelTests", "RefuelTests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSoapService", "WebSoapService\WebSoapService.csproj", "{95C0EA9E-2A77-455C-9DEC-32D318C70278}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplicationAdmin", "WebApplicationAdmin\WebApplicationAdmin.csproj", "{B632545D-26EB-49A6-AA6C-87F058E2E7BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{95C0EA9E-2A77-455C-9DEC-32D318C70278}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95C0EA9E-2A77-455C-9DEC-32D318C70278}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95C0EA9E-2A77-455C-9DEC-32D318C70278}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B632545D-26EB-49A6-AA6C-87F058E2E7BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B632545D-26EB-49A6-AA6C-87F058E2E7BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B632545D-26EB-49A6-AA6C-87F058E2E7BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B632545D-26EB-49A6-AA6C-87F058E2E7BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +42,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8012F00C-2835-4B57-9A98-0B54DF543BA5} = {75B20AE8-8D9D-4A92-BC97-02AC5F924F18}
 		{95C0EA9E-2A77-455C-9DEC-32D318C70278} = {75B20AE8-8D9D-4A92-BC97-02AC5F924F18}
+		{B632545D-26EB-49A6-AA6C-87F058E2E7BB} = {75B20AE8-8D9D-4A92-BC97-02AC5F924F18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25744114-3B45-4EA2-9AB3-79F8B0EA2CFD}

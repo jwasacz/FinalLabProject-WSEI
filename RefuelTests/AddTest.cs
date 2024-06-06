@@ -15,7 +15,7 @@ namespace RefuelTests
         public RefuelAddTests()
         {
             var options = new DbContextOptionsBuilder<DataContext>()
-                .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DbFinalLabWSEI;Trusted_Connection=True;MultipleActiveResultSets=true") // Zmień to na właściwy connection string
+                .UseInMemoryDatabase(databaseName: "TestDb")
                 .Options;
 
             _context = new DataContext(options);
@@ -25,14 +25,14 @@ namespace RefuelTests
 
         public void Dispose()
         {
-            _context.Database.EnsureDeleted(); // Usuwa bazę danych po zakończeniu testów
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
         public async Task AddRefuels_AddsRefuel_ReturnsUpdatedList()
         {
             // Arrange
-            var newRefuel = new Refuel { Date = DateTime.Now, Price = 100 };
+            var newRefuel = new Refuel { Date = DateTime.UtcNow, Price = 100 };
 
             // Act
             var result = await _controller.AddRefuels(newRefuel);
@@ -40,8 +40,8 @@ namespace RefuelTests
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var refuels = Assert.IsType<List<Refuel>>(okResult.Value);
-            Assert.Single(refuels); // Sprawdza, czy lista ma dokładnie jeden element
-            Assert.Contains(refuels, r => r.Price == 100 && r.Date.Date == DateTime.Now.Date);
+            Assert.Single(refuels);
+            Assert.Contains(refuels, r => r.Price == 100 && r.Date.Date == DateTime.UtcNow.Date);
         }
     }
 }
