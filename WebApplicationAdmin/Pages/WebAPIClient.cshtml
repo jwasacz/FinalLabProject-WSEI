@@ -1,0 +1,17 @@
+﻿@page
+@model WebApplicationAdmin.Pages.WebAPIClientModel
+@{
+    ViewData["Title"] = "Web API Client";
+}
+
+<h1>Web API Client</h1>
+
+<ul>
+    @foreach (var refuel in Model.Refuels)
+    {
+        <li>@refuel.Id</li>
+        <li>@refuel.Date</li>
+        <li>@refuel.Price</li>
+        
+    }
+</ul>
