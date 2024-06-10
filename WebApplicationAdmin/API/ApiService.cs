@@ -5,7 +5,7 @@ namespace WebApplicationAdmin.API
 {
     public class ApiService : IApiInterface
     {
-        string url = "https://localhost:7107/api/"; //TODO doklejać przy metodach końcówkę
+        string url = "https://localhost:7107/api/"; 
         static readonly HttpClient client = new HttpClient();
 
 

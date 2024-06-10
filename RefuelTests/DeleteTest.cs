@@ -22,7 +22,7 @@ namespace RefuelTests
             _context.Database.EnsureCreated();
             _controller = new RefuelController(_context);
 
-            // Dodajemy testowy rekord, abyœmy mogli go póŸniej usun¹æ
+            
             _context.Refuels.Add(new Refuel { Date = DateTime.UtcNow, Price = 100 });
             _context.SaveChanges();
         }
@@ -35,14 +35,14 @@ namespace RefuelTests
         [Fact]
         public async Task DeleteRefuels_DeletesRefuel_ReturnsUpdatedList()
         {
-            // Arrange
+            
             var existingRefuel = await _context.Refuels.FirstAsync();
             var initialCount = await _context.Refuels.CountAsync();
 
-            // Act
+           
             var result = await _controller.DeleteRefuels(existingRefuel.Id);
 
-            // Assert
+           
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var refuels = Assert.IsType<List<Refuel>>(okResult.Value);
             Assert.Equal(initialCount - 1, refuels.Count);

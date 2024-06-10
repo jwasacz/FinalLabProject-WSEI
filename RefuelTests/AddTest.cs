@@ -31,13 +31,13 @@ namespace RefuelTests
         [Fact]
         public async Task AddRefuels_AddsRefuel_ReturnsUpdatedList()
         {
-            // Arrange
+     
             var newRefuel = new Refuel { Date = DateTime.UtcNow, Price = 100 };
 
-            // Act
+           
             var result = await _controller.AddRefuels(newRefuel);
 
-            // Assert
+      
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var refuels = Assert.IsType<List<Refuel>>(okResult.Value);
             Assert.Single(refuels);

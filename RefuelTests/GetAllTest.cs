@@ -22,7 +22,6 @@ namespace RefuelTests
             _context.Database.EnsureCreated();
             _controller = new RefuelController(_context);
 
-            // Dodajemy kilka testowych rekordów
             _context.Refuels.AddRange(
                 new Refuel { Date = DateTime.UtcNow.AddDays(-1), Price = 100 },
                 new Refuel { Date = DateTime.UtcNow, Price = 150 }
@@ -38,10 +37,9 @@ namespace RefuelTests
         [Fact]
         public async Task GetAllRefuels_ReturnsAllRefuels()
         {
-            // Act
+          
             var result = await _controller.GetAllRefuels();
 
-            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var refuels = Assert.IsType<List<Refuel>>(okResult.Value);
             var expectedCount = await _context.Refuels.CountAsync();

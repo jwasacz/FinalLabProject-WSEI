@@ -6,11 +6,11 @@ namespace SoapService.DataContract
     public class CarWashData
     {
         [DataMember]
-        public string? WashDate { get; set; } // Data mycia samochodu
+        public string? WashDate { get; set; } 
         [DataMember]
-        public decimal Price { get; set; } // Cena mycia
+        public decimal Price { get; set; } 
         [DataMember]
-        public WashType Type { get; set; } // Rodzaj mycia: Standard lub Premium
+        public WashType Type { get; set; } 
     }
 
     public enum WashType

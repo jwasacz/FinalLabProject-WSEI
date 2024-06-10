@@ -8,7 +8,6 @@ public class CarWashService : ICarWashService
     {
         if (Validate(carWashData))
         {
-            // Logika rejestracji mycia samochodu
             return $"Dane mycia zarejestrowane: Data: {carWashData.WashDate}, Cena: {carWashData.Price}, Rodzaj: {carWashData.Type}";
         }
         return "Nie można zarejestrować danych mycia.";

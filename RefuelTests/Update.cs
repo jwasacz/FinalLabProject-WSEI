@@ -22,7 +22,7 @@ namespace RefuelTests
             _context.Database.EnsureCreated();
             _controller = new RefuelController(_context);
 
-            // Dodajemy testowy rekord
+        
             var refuel = new Refuel { Id = 1, Date = DateTime.UtcNow.AddDays(-1), Price = 100 };
             _context.Refuels.Add(refuel);
             _context.SaveChanges();
@@ -36,13 +36,12 @@ namespace RefuelTests
         [Fact]
         public async Task UpdateRefuel_ReturnsUpdatedRefuel()
         {
-            // Arrange
+           
             var updatedRefuel = new Refuel { Id = 1, Date = DateTime.UtcNow, Price = 150 };
 
-            // Act
+          
             var result = await _controller.UpdateRefuels(updatedRefuel);
 
-            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var refuel = Assert.IsType<Refuel>(okResult.Value);
             Assert.Equal(updatedRefuel.Date, refuel.Date);
@@ -52,13 +51,13 @@ namespace RefuelTests
         [Fact]
         public async Task UpdateRefuel_ReturnsBadRequest_WhenRefuelNotFound()
         {
-            // Arrange
+            
             var updatedRefuel = new Refuel { Id = 99, Date = DateTime.UtcNow, Price = 150 };
 
-            // Act
+            
             var result = await _controller.UpdateRefuels(updatedRefuel);
 
-            // Assert
+            
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
     }
