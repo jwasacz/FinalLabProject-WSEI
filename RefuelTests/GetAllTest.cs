@@ -10,7 +10,7 @@ namespace RefuelTests
     public class RefuelGetAllTests : IDisposable
     {
         private readonly DataContext _context;
-        private readonly RefuelController _controller;
+        private readonly RefuelController _controller; 
 
         public RefuelGetAllTests()
         {
